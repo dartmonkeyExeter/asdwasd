@@ -1,0 +1,75 @@
+jan 0001	/\
+feb 0010	\/
+mar 0011	/\
+apr 0100	\/
+may 0101	/\
+jun 0110	\/
+jul 0111	/\
+aug 1000	\/
+sep 1001	/\
+oct 1010	\/
+nov 1011	/\
+dec 1111	\/
+		/\
+\/\/\/\/\/\/\/\/\/
+
+1110 0010 1001 10000
+1000 0010 1111 11010
+
+12 2 9 16
+8 2 15 25
+
+LBIPHBOY (not caesar shifted so im lost)
+
+0010000
+001100
+010101
+0010011
+001111
+01110
+0000101
+16
+12
+21
+19
+15
+14
+5
+
+HINT IS PLUSONE
+
+two As in 
+1110 
+0010 
+1001 
+10000
+1000 
+0010 
+1111 
+11010
+
+NBIPHBOZ
+CAESARS CIPHER ONE SHIFT BACKWARDS
+MAHOGANY
+
+
+0010 == A
+
+def play_game():
+    candy, costume_level = load()
+    playing = True
+    while playing:
+        user_input = input()
+        if user_input == "upgrade costume":
+            if candy >= 10:
+                candy -= 10
+                costume_level += 1
+                print("costume upgraded!")
+            else:
+                print('not enough candy')
+        elif user_input == "exit":
+            exit()
+        else:
+            candy += costume_level
+        print(f'candy: {str(candy)}')
+
