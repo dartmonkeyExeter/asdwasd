@@ -1,55 +1,63 @@
-import time
-import tkinter as tk
+#import time
 
-root = tk.Tk()
-root.title('candy clicker: return of the candy')
+#user_data_file = open("userdata.txt")
+#user_name = user_data_file.readline().strip()
+#user_age = user_data_file.readline().strip()
+#user_animal_preference = user_data_file.readline().strip()
+#user_data_file.close()
+#print(f'im gonna kill you {user_name}, you are a waste of {user_age} years and '
+ #     f'i hope all {user_animal_preference} disappear, making you wildly upset')
 
-candy = 0
-hat_modifier = 1
-costume_level = 1
+# second example
+#user_data_two = open("funny.txt")
+#name = user_data_two.readline().strip()
+#address = user_data_two.readline().strip()
+#time_till_im_there = user_data_two.readline().strip()
+#how_afraid_you_should_be = user_data_two.readline().strip()
 
+#user_data_two.close()
+#  for i in range(int(time_till_im_there)):
+#     print(f"name: {name}\nlocation: {address}\n"
+#     f"time till im there: {int(time_till_im_there) - i}\n"
+#     f"how afraid you should be: {how_afraid_you_should_be}")
+#     time.sleep(1)
 
-# Define a function to update the label and the clicks
-def update():
-    global candy, costume_level, hat_modifier
+# writing to a file
 
-    # Increase the clicks by the multiplier
-    candy += costume_level * hat_modifier
-    # Update the label with the new number of clicks
-    label.config(text=str(f'you have {candy} candy!'))
+#user_name = input('name')
+#user_money = input('money')
 
-def costume_upgrade():
-    global candy, costume_level, hat_modifier
-    if candy >= 10:
-        costume_level += 1
-    label.config(text=str(f'costume level is now {costume_level}'))
+#letter_file = open(f'{user_name}_letter.txt', 'w')
 
-# Create a label to display the number of clicks
-label = tk.Label(root, text="you have 0 candy!", font=("Comic sans MS", 32))
+#letter_file.write(f'CONGRATULATION {user_name}!!! you have won large money, £{user_money}!'
+  #                f'TO redem your GRAND PRIZE please email credit card informations to this'
+ #                 f'emails addres! we hope hear from you soon!!!')
+#letter_file.close()
 
-label.pack()
-
-
-
-# Create a button to increase the number of clicks
-photo = tk.PhotoImage(file="gyatt.png")
-button = tk.Button(root, image=photo, command=update)
-upgrade_button = tk.Button(root, text='costume upgrade', command=costume_upgrade())
-button.pack()
-
-# Run the main loop
-root.mainloop()
+def save(candy, costume_level, hat_modifier, already_bought):
+    save_file = open('data.txt', 'w')
+    save_file.write(f'{candy}\n{costume_level}\n{hat_modifier}\n{already_bought}')
+    save_file.close()
 
 
 def load():
-    return 0, 1
+    try:
+        save_file = open('data.txt')
+        val1 = int(save_file.readline())
+        val2 = int(save_file.readline())
+        val3 = int(save_file.readline())
+        val4 = int(save_file.readline())
+        save_file.close()
+        return val1, val2, val3, val4
+    except ValueError or FileNotFoundError:
+        print('save data corrupt! creating new file...')
+        save(candy=0,costume_level=1,hat_modifier=1,already_bought=0)
+        return 0, 1, 1, 0
 
 
 def play_game():
-    candy, costume_level = load()
+    candy, costume_level, hat_modifier, already_bought = load()
     playing = True
-    already_bought = False
-    hat_modifier = 1
     while playing:
         user_input = input()
         if user_input == "upgrade costume":
@@ -59,15 +67,25 @@ def play_game():
                 print("costume upgraded!")
             else:
                 print('not enough candy')
-        elif user_input == "buy hat" and not already_bought:
-            if candy >= 10000:
+        elif user_input == "buy hat":
+            if already_bought == 1:
+                print('you already have a hat!!')
+            elif candy >= 10000:
                 candy -= 10000
                 hat_modifier = 5
                 print('purchased hat!')
+                already_bought = 1
             else:
                 print('you havent got enough candy brokie')
-        elif user_input == "exit":
-            exit()
+        elif user_input == "save":
+            save(candy, costume_level, hat_modifier, already_bought)
+            print('file saved!')
+        elif user_input == "new game":
+            candy = 0
+            costume_level = 1
+            hat_modifier = 1
+            already_bought = 0
+            save(candy, costume_level, hat_modifier, already_bought)
         else:
             candy += costume_level * hat_modifier
         print(f'candy: {str(candy)}')
